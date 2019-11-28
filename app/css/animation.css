@@ -1,0 +1,98 @@
+.chat_contain{
+    width: 100%;
+    height: 13.5rem;
+    position: absolute;
+    right: 0rem;
+    top: 14%;
+    z-index: 2;
+    overflow: hidden;
+}
+.uniform_motion{
+    width: 100%;
+    height: 37.5rem;
+    position: absolute;
+    left: 0rem;
+    top: -4.67rem;
+    animation: slideInUp 6s linear 0.1s infinite;
+    -webkit-animation: slideInUp 6s linear 0.1s infinite;
+    -moz-animation: slideInUp 6s linear 0.1s infinite;
+    -o-animation: slideInUp 6s linear 0.1s infinite;
+    -ms-animation: slideInUp 6s linear 0.1s infinite;
+}
+.barrage{
+    height: 1.6rem;
+    line-height: 1.6rem;
+    border-radius: 0.8rem;
+    font-size: 0.75rem;
+    overflow: hidden;
+    color: #fff;
+    background: rgba(133, 115, 108, 0.4);
+    position: absolute;
+    z-index: 2;
+}
+.barrage img{
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 50%;
+    float: left;
+    margin-right: 0.2rem;
+}
+.barrage span{
+    height: 1.6rem;
+    float: left;
+    display: inline-block;
+}
+@keyframes slideInUp {
+    from {
+        transform: translate3d(0, 0rem, 0);
+        visibility: visible;
+    }
+
+    to {
+        transform: translate3d(0, -19.2rem, 0);
+    }
+}
+
+@-webkit-keyframes slideInUp {
+    from {
+        -webkit-transform: translate3d(0, 0rem, 0);
+        visibility: visible;
+    }
+
+    to {
+        -webkit-transform: translate3d(0, -19.2rem, 0);
+    }
+}
+
+@-moz-keyframes slideInUp {
+    from {
+        -moz-transform: translate3d(0, 0rem, 0);
+        visibility: visible;
+    }
+
+    to {
+        -moz-transform: translate3d(0, -19.2rem, 0);
+    }
+}
+
+@-o-keyframes slideInUp {
+    from {
+        -o-transform: translate3d(0, 0rem, 0);
+        visibility: visible;
+    }
+
+    to {
+        -o-transform: translate3d(0, -19.2rem, 0);
+    }
+}
+
+@-ms-keyframes slideInUp {
+    from {
+        -ms-transform: translate3d(0, 0rem, 0);
+        visibility: visible;
+    }
+
+    to {
+        -ms-transform: translate3d(0, -19.2rem, 0);
+    }
+}

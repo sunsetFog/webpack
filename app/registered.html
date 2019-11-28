@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title>注册页面</title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <script src="js/rem.js"></script>
+    <script src="js/browser.min.js"></script>
+    <script src="js/vue.js"></script>
+    <link rel="stylesheet" href="js/index.css">
+    <script src="js/index.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/clipboard.min.js"></script>
+    <script src="js/google-analytics.js"></script>
+
+    <style>
+        html, body, #registered{
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+		}
+		html,body {
+			margin: 0rem;
+            padding: 0rem;
+            border: 0rem;
+		}
+        .el-message {
+			min-width: 18.75rem !important;
+		}
+        .el-form-item__error {
+            color: #F56C6C;
+            font-size: 0.75rem;
+            padding-top: 0.3rem;
+            position: absolute;
+            top: 100%;
+            left: 0rem;
+        }
+        .el-form-item {
+            margin-bottom: 1.5rem;
+        }
+        #registered{
+            position: relative;
+            height: 45rem;
+            padding: 0rem 1rem 0 1rem;
+            box-sizing: border-box;
+            background-repeat: no-repeat;
+			background-size: 100% 45rem;
+        }
+        .security{
+            width: 100%;
+            height: 8rem;
+            position: relative;
+        }
+        .security img{
+            width: 14rem;
+            height: 8rem;
+            position: absolute;
+            left: 50%;
+            top: 0rem;
+            margin-left: -7rem;
+        }
+        .matter{
+			height: 3rem;
+            line-height: 3rem;
+			font-family: MicrosoftYaHei;
+			font-size: 1.2rem;
+			font-weight: normal;
+			font-stretch: normal;
+			letter-spacing: 0rem;
+			color: white;
+			display: block;
+			margin-bottom:0.2rem;
+		}
+        
+        .el-input__inner{
+			height: 2.5rem;
+            font-size: 1rem;
+			background-color: rgba(255,255,255,0.65);
+			border-radius: 0.31rem;
+			border: solid 0.06rem #cb2dff;
+			color: #311a58;
+			display: block;
+			text-indent: 0.1rem;
+		}
+        input:-ms-input-placeholder{color: #311a58!important;}/* Internet Explorer 10+ */ 
+		input::-webkit-input-placeholder{color: #311a58!important;}/* WebKit browsers */
+		input::-moz-placeholder{color: #311a58!important;}/* Mozilla Firefox 4 to 18 */ 
+		input:-moz-placeholder{color: #311a58!important;}/* Mozilla Firefox 19+ */ 
+
+        .write_code{
+            width: 100%;
+            height: 4rem;
+        }
+        .write_code span{
+            width: 6rem;
+            height: 3rem;
+            float: right;
+            display: inline-block;
+            text-align: center;
+            line-height: 3rem;
+            background-repeat: no-repeat;
+			background-size: 100% 100%;
+        }
+        .send{
+            background-image: url('img/zhuce/yanzhengma1.png');
+        }
+        .wait{
+            background-image: url('img/zhuce/yanzhengma2.png');
+            font-size: 1rem;
+            color: #7d500f;
+        }
+        .submission{
+            width: 100%;
+            height: 4rem;
+        }
+        .submission img{
+            width: 8rem;
+            height: 4rem;
+            float: right;
+        }
+        .pc_energy{
+            width: 750px;
+            top: 0px;
+            left: 50%;
+            margin-left: -375px;
+        }
+        .mobile_energy{
+            width: 100%;
+        }
+                
+    </style>
+
+</head>
+<body>
+    <div id="registered" :class="{'pc_energy': is_energy,'mobile_energy': !is_energy}">
+        <div class="security">
+            <img src='img/zhuce/anquanzhuce.png'>
+        </div>
+        <el-form :model="form2" :rules="rules2" ref="form2">
+            <span class="matter">手 机 号</span>
+            <el-form-item label=""  prop='phone'>
+            <el-input v-model.trim="form2.phone" placeholder='请输入手机号' maxlength="12"></el-input>
+            </el-form-item>
+            <span class="matter">手 机 验 证 码</span>
+            <el-form-item label=""  prop='yzm'>
+            <el-input v-model.trim="form2.yzm" placeholder='请输入手机验证码' maxlength="10"></el-input>
+            </el-form-item>	
+            <div class="write_code"> 
+                        <span class="send" @click="getAutoCode" v-if="!verify_active"></span>
+                        <span class="wait" v-else="verify_active">{{verify_time}}s</span>
+            </div>
+            <span class="matter">密  码</span>
+            <el-form-item label=""  prop='pwd'>
+            <el-input v-model.trim="form2.pwd" placeholder='请输入账号密码' type='password' maxlength="12"></el-input>
+            </el-form-item>
+            <el-form-item label=""  prop='apwd'>
+            <el-input v-model.trim="form2.apwd" placeholder='请输入再次输入密码' type='password' maxlength="12"></el-input>
+            </el-form-item>						
+         </el-form>
+
+        <div class='submission'> 
+            <img src='img/zhuce/tijiao.png' @click='submit'>
+        </div>
+
+    </div>
+    <script type="text/babel">
+            new Vue({
+                el: '#registered',
+                data:function(){
+                    var phonetest = /^1(3|4|5|7|8)\d{9}$/;
+                    var phonerules = (rule, value, callback)=>{
+                        if (!value) {
+                            callback(new Error('请输入手机号'))
+                        } else if (!phonetest.test(value)){
+                            callback(new Error('请输入正确的手机号'))
+                        } else {
+                            callback()
+                        }
+                    }
+                    
+                    var specialReg = /[^A-z0-9]/;
+                    var validateSpecial = (rule, value, callback)=>{
+                        if (!value) {
+                            callback(new Error('请输入密码'));
+                        } else if (specialReg.test(value)) {
+                            callback(new Error('不能输入特殊字符！'));
+                        } else {
+                            callback();
+                        }
+                    }
+
+                    var validatePass2 = (rule, value, callback)=>{
+                        if (!value) {
+                            callback(new Error('请再次输入密码'));
+                        } else if (this.form2.pwd !== this.form2.apwd) {
+                            callback(new Error('两次输入的密码不一致!'));
+                        } else {
+                            callback();
+                        }
+                    }
+
+
+                    return {
+                        promocode: '',
+                        page_picturn: [
+                            'url(img/zhuce/girl01.png)','url(img/zhuce/girl01.png)',
+                            'url(img/zhuce/girl02.png)','url(img/zhuce/girl03.png)'
+                        ],
+                        djs: true,
+                        form2: {
+                            phone: '',
+                            yzm: '',
+                            pwd: '',
+                            apwd: ''
+                        },
+                        rules2: {
+                            phone: [
+                                {required: true, validator: phonerules, trigger: 'blur'},
+                            ],
+                            pwd: [
+                                {required: true, validator: validateSpecial, trigger: 'blur'},
+                                {min: 6, max:12, message: '密码在6到12个字符之间', trigger: 'blur'},
+                            ],
+                            apwd: [
+                                {required: true, validator: validatePass2, trigger: 'blur'},
+                                {min: 6, max: 12, message: '长度在6到12个字符之间', trigger: 'blur'}
+                            ],
+                            yzm: [
+                                {required: true, message: '请输入验证码', trigger: 'blur'},
+                            ]
+                        },
+                        verify_active: false,
+                        verify_time: 60,
+                        url: '',
+                        is_energy: false,
+                    }
+                },
+                created:function(){
+                    this.url = location.protocol + '//' + location.host;
+                    var urlhttp = window.location.href
+                    if (urlhttp.indexOf('?') && urlhttp.split('?')[1]) {
+                        this.promocode = window.location.href.split('?')[1]
+                    }
+                },
+                mounted:function(){
+                    var rang_key = this.random(1,4);
+                    var box_frame = document.getElementById('registered');
+                    box_frame.style.backgroundImage = this.page_picturn[rang_key];
+                    this.renderResize();
+                    window.addEventListener("resize", this.renderResize, false);
+                },
+                beforeDestroy:function(){
+                    window.removeEventListener("resize", this.renderResize, false);
+                },
+                methods: {
+                    getAutoCode:function(){
+                        var that = this;
+                        if (that.form2.phone == '') {
+                            that.$message.error('请输入手机号')
+                            return false
+                        }
+
+                        var json = {
+						    cellphone: that.form2.phone
+                        }
+                        var url = that.url + '/web/player/getmobilecode';
+                        axios.post(url,json).then(function(res){
+                            if(res.data.code==0){
+                                that.verify_time = 60;
+                                that.verify_active = true;
+                                that.timer();
+                                that.$message.success('短信发送成功！');
+                            }  
+                        })
+                    },
+                    timer:function(){
+                        if(this.verify_time>0){
+                            this.verify_time--;
+                            setTimeout(this.timer,1000);
+                        }else{
+                            this.verify_time = 0;
+                            this.verify_active = false;
+                        }
+                    },
+                    random:function(min, max) {
+                        return Math.floor(Math.random() * (max - min)) + min;
+                    },
+                    submit:function(){
+                        var that = this
+                        that.$refs.form2.validate(function(valid){
+                            if (valid) {
+                                var json = {
+                                            cellphone: that.form2.phone,
+                                            loginpwd: that.form2.pwd,
+                                            confirmpwd: that.form2.apwd,
+                                            promocode: that.promocode,
+                                            deviceid: that.form2.phone+Date.now(),
+                                            smscode: that.form2.yzm,
+                                            agentorg: ''
+                                        }
+                                        var url = that.url + '/web/player/safetyreg'
+                                        $.ajax({
+                                            type: 'post',
+                                            url:url,
+                                            data: JSON.stringify(json),
+                                            async: false,
+                                            contentType: 'application/json;charset=UTF-8',
+                                            success: function (res) {
+                                            var resdata = JSON.parse(res)
+                                                if (resdata.code == '0') {
+                                                    var username = resdata.data.username
+                                                    var userpwd = resdata.data.userpwd
+                                                    var data = {at: username, pw: userpwd}
+
+                                                    // var list = JSON.stringify(data)
+                                                    // that.copyHandle(list)
+                                                    that.copyBoard(data);
+
+                                                    // var e = document.createElement('input');
+                                                    // e.value = list;
+                                                    // document.body.appendChild(e)
+                                                    // e.select();
+                                                    // var tag = document.execCommand('Copy')
+                                                    // console.log(tag)
+                                                    // e.style.display = 'none'
+
+                                                    var url = 'download.html?'+ username + '#OA&' + userpwd
+                                                    window.location.href = url 
+                                                    that.$refs.form.resetFields()
+                                                } else {
+                                                    that.$message.error(resdata.message);
+                                                    
+                                                }
+                                            }
+                                        })
+                            } else {
+                                return false
+                            }
+                        })                        
+                    },
+                    copyBoard:function(data){
+                        var clipboard = new ClipboardJS('.btn',{
+                            text: function() {
+                                return JSON.stringify(data);
+                            }
+                        })
+                        clipboard.on('success',function(e){
+                            // console.log(e);
+                            e.clearSelection();
+                        })
+                        clipboard.on('error',function(e){
+                            // console.log(e);
+                        })
+                    },
+                    isMobile:function() {
+                        var flag = navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i);
+                        return flag;
+                    },
+                    renderResize:function(){
+                        if(this.isMobile()){
+                            this.is_energy = false;
+                        }else{
+                            this.is_energy = true;
+                        }
+                    }
+                }
+            })
+        </script>
+</body>
+</html>

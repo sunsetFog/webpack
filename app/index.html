@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <meta content="yes" name="apple-mobile-web-app-capable">
+    <meta content="black" name="apple-mobile-web-app-status-bar-style">
+    <meta content="telephone=no" name="format-detection">
+    <meta content="email=no" name="format-detection">
+    <title></title>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <link rel="stylesheet" href="css/menu.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <script src="js/rem.js"></script>
+    <script src="js/browser.min.js"></script>
+    <script src="js/vue.js"></script>
+    <script src="js/axios.min.js"></script>
+    <script src="js/jquery-3.4.1.min.js"></script>
+    <script src="js/clipboard.min.js"></script>
+    <script src="js/google_analytics.js"></script>
+    <script type="text/javascript" src="js/overall.json"></script>
+    <script type="text/javascript" charset="UTF-8" src="//res.cdn.openinstall.io/openinstall.js"></script>
+    <style>
+        html, body, #btn_download{
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+		}
+		html,body {
+			margin: 0rem;
+            padding: 0rem;
+            border: 0rem;
+            overflow-x: hidden;
+		}
+        #btn_download{
+            position: relative;
+        }
+        .pc_energy{
+            width: 750px;
+            top: 0px;
+            left: 50%;
+            margin-left: -375px;
+        }
+        .mobile_energy{
+            width: 100%;
+        }
+        .pc_gd{
+            width: 750px;
+            left: 50%;
+            margin-left: -383.5px;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="btn_download" :class="{'full_screen':true,'pc_energy': is_energy,'mobile_energy': !is_energy}" :style="{height: box_height}">
+        <span class="diamond" v-for="item in picturn" :style="{backgroundImage: item.src,height: item.height}"></span>
+        
+        <div class="chat_contain" v-if="tool_key==6" :style="{top: android_ios}">
+            <div class="uniform_motion">
+                <div class="barrage" v-for="item in info_list" :style="{minWidth: item.width+'rem',right: item.right+'rem',top: item.top+'rem'}">
+                    <img :src="item.src"/>
+                    <span>{{item.content}}</span>
+                </div>
+            </div>
+        </div>
+
+        <button v-for="item in core" v-if="item.active" :class="item.name" :style="{width: item.width,height: item.height,left: item.left,top: item.top}"></button>
+        <div v-if="tool_key==7" :class="{'qihang3_gd':true,'pc_gd': is_energy}">
+            <button class="play_game"></button>
+        </div>
+
+        <img v-if="tool_key==10" v-for="item in core" class="play_game gif_btn" :style="{width: item.width,height: item.height,left: item.left,top: item.top}" src="img/xiongying/xiaoguotu.gif" style="z-index: 2"/>
+        <div v-if="tool_key==10" :class="{'xiongying_gd':true,'pc_gd': is_energy}" style="z-index: 20">
+            <button class="play_game"></button>
+        </div>
+
+    </div>
+    <script type="text/babel" src="js/website.js"></script>
+</body>
+</html>
