@@ -56,9 +56,9 @@ new Vue({
                 {index: 6,name: '启航-站点2',title: '钻石娱乐官方下载',id: '14225',app_key: 'likeqd',height: '46rem',domain: 'http://qihang.osiksw.com/',
                                                 button: [{active: true,name: 'play_game',width: '13.44rem',height: '9.3%',left: '5.3rem',top: '66.5%'}],
                                                 photo: [{src:'url(img/qihang/qihang2.jpg)',height: '100%'}],
-                                                ios_height: '150.1rem',
-                                                ios_button: [{active: true,name: 'play_game',width: '10.2rem',height: '4rem',left: '0.9rem',top: '30.5rem'},{active: true,name: 'play_game',width: '10.2rem',height: '4rem',left: '12.3rem',top: '30.5rem'},{active: true,name: 'play_game',width: '10.4rem',height: '4rem',left: '6.5rem',top: '144.2rem'}],
-                                                ios_photo: [{src:'url(img/ios/1.jpg)',height: '31%'},{src:'url(img/ios/2.jpg)',height: '16.5%'},{src:'url(img/ios/3.jpg)',height: '52.5%'}],//1488+795+2518=4801
+                                                ios_height: '178.75rem',
+                                                ios_button: [{active: true,name: 'play_game',width: '10.2rem',height: '4rem',left: '0.9rem',top: '30.5rem'},{active: true,name: 'play_game',width: '10.2rem',height: '4rem',left: '12.3rem',top: '30.5rem'}],
+                                                ios_photo: [{src:'url(img/ios/ios_1.jpg)',height: '26%'},{src:'url(img/ios/ios_2.jpg)',height: '40.5%'},{src:'url(img/ios/ios_3.jpg)',height: '33.5%'}],//1486+2315+1919=5720
                                                 },
                 {index: 7,name: '启航-站点3',title: '钻石娱乐官方下载',id: '14226',app_key: 'likeqd',height: '83.7rem',domain: 'http://qihang.l9pjfs.com/',
                                                 button: [{active: false,name: 'play_game',width: '0rem',height: '0rem',left: '0rem',top: '0rem'}],
@@ -107,6 +107,7 @@ new Vue({
             ],
             is_energy: false,
             is_ios: false,
+            roll_ios: false,
             android_ios: '14%',
             page_picturn: [
                 {src: 'url(img/bg/01.jpg)',ios_button: [{active: true,name: 'play_game',width: '0rem',height: '0rem',left: '0rem',top: '0rem'}]},
@@ -168,11 +169,23 @@ new Vue({
         }
         that.renderResize();
         window.addEventListener("resize", that.renderResize, false);
+        window.addEventListener("scroll", that.handleScroll);
     },
     beforeDestroy:function(){
         window.removeEventListener("resize", this.renderResize, false);
+        window.removeEventListener("scroll", this.handleScroll);
     },
     methods: {
+        handleScroll:function(){
+            var big_box_scroll = document.getElementById('btn_download');
+            var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+            // console.log('top-666',scrollTop)
+            if(scrollTop>big_box_scroll.offsetHeight*0.54){
+                this.roll_ios = true;
+            }else{
+                this.roll_ios = false;
+            }
+        },
         getAgent:function(){
             var that = this;
             var urlhttp = window.location.href;
@@ -244,7 +257,7 @@ new Vue({
                         ele.onclick = function() {
                             if(that.is_ios==true&&index==0&&that.tool_key==6){
                                 var big_box = document.getElementById('btn_download');
-                                document.documentElement.scrollTop = document.body.scrollTop = big_box.offsetHeight*0.31;
+                                document.documentElement.scrollTop = document.body.scrollTop = big_box.offsetHeight*0.667;
                                 return;
                             }
                             if(that.is_ios==true&&index==2&&that.tool_key==6){
@@ -351,7 +364,7 @@ new Vue({
                     this.is_ios = true;
                     this.picturn = this.channel_list[this.tool_key].ios_photo;
                     this.box_height = this.channel_list[this.tool_key].ios_height;
-                    this.android_ios = '4.2%';
+                    this.android_ios = '3.5%';
                     this.core = this.channel_list[this.tool_key].ios_button;
                 }    
             }else{

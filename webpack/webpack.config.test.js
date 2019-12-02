@@ -47,7 +47,7 @@ module.exports = {
             // chunks: ["menu","animation","rem","browser","website"]
         }),
         new webpack.HotModuleReplacementPlugin(),//热更新
-        new CleanWebpackPlugin(),
+        // new CleanWebpackPlugin(),
         new copyWebpackPlugin([{
             from:path.resolve(__dirname,'../app/img'),//打包的静态资源目录地址
             to:'./img' //打包到dist下面的public

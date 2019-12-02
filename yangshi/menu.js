@@ -1,1 +1,1 @@
-require('../page/css/menu.css');
+require('../app/css/menu.css');

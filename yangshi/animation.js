@@ -1,1 +1,1 @@
-require('../page/css/animation.css');
+require('../app/css/animation.css');
