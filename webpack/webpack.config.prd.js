@@ -106,7 +106,10 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 include: path.resolve(__dirname,'/app'),
-                exclude: path.resolve(__dirname,'/node_modules')
+                exclude: path.resolve(__dirname,'/node_modules'),// 排除掉node_modules这个文件夹的js文件
+                options: {
+                    presets: ['env'] // 使用es6工具包
+                }
             },
             {
                 test: /\.css$/,
@@ -117,8 +120,8 @@ module.exports = {
                 ]
             },
             {
-                test: /\.scss$/,
-                loader: 'style-loader!css-loader!postcss-loader!sass-loader' 
+                test: /\.less$/,
+                loader: 'style-loader!css-loader!less-loader'
             },
             {
                 test: /\.html$/,
@@ -129,24 +132,19 @@ module.exports = {
                 loader: 'ejs-loader'
             },
             {
-                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-                loader: 'url-loader'
-            },
-            {
-                test: /\.woff(\?t=\d+\.\d+\.\d+)?$/,
-                use: 'url-loader?limit=100000&mimetype=application/font-woff'
-            },
-            {
-                test: /\.woff2(\?t=\d+\.\d+\.\d+)?$/,
-                use: 'url-loader?limit=100000&mimetype=application/font-woff'
-            },
-            {
-                test: /\.ttf(\?t=\d+\.\d+\.\d+)?$/,
-                use: 'url-loader?limit=100000&mimetype=application/octet-stream'
-            },
-            {
-                test: /\.eot(\?t=\d+\.\d+\.\d+)?$/,
-                use: 'url-loader?limit=100000&mimetype=application/font-eot'
+                test: /\.(png|jpg|gif|woff|svg|ttf|eot)$/,
+                use: [{
+                    loader: 'file-loader',
+                    options: { // url-loader 这里的options选项参数可以定义多大的图片转换为base64
+                        name: '[path][name].[ext]',
+                        context:'app',
+                        publicPath:function(url){
+                            return '../'+url;
+                        }
+                        // publicPath: '../img/file_loader',//发布目录
+                        // outputPath: '../dist/img/file_loader' //定义输出的图片文件夹
+                    }
+                }]
             }
         ]
     }
