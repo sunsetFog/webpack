@@ -136,9 +136,6 @@ new Vue({
         }
     },
     created:function(){
-        // $.getJSON("js/overall.json", function (data){
-        //     this.tool_key = data.tool_key;
-        // })
         this.tool_key = overall.tool_key;
         var urlhttp = window.location.href;
         if(window.location.host=="10.1.101.120:504"&&urlhttp.indexOf('?num=')!=-1){
@@ -165,7 +162,7 @@ new Vue({
         }else{
             ga('set', 'page', this.hrefGa());
             ga('send', 'pageview');
-            that.cardGame();
+            // that.cardGame();
         }
         that.renderResize();
         window.addEventListener("resize", that.renderResize, false);
